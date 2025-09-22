@@ -1,0 +1,14 @@
+
+    
+    
+    
+    create table main."client_contracts" ("client_id" TEXT,"contract_start_date" TEXT,"contract_duration_months" INT,"spend_threshold" INT,"discounted_fee_margin" REAL)
+  ;
+    -- dbt seed --
+    
+            insert into main.client_contracts ("client_id", "contract_start_date", "contract_duration_months", "spend_threshold", "discounted_fee_margin") values
+            (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)
+        
+
+;
+  
