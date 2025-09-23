@@ -30,6 +30,6 @@
         else 'Standard_no_contract'
     end as fee_status
 
-from int_client_contract_periods
+from main_intermediate."int_client_contract_periods"
 
   

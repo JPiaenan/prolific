@@ -24,4 +24,4 @@ select
         else 'Standard_no_contract'
     end as fee_status
 
-from int_client_contract_periods
+from {{ ref('int_client_contract_periods') }}

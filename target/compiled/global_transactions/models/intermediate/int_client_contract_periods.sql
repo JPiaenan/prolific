@@ -9,8 +9,8 @@ with a as (
      and t.transaction_date >= c.contract_start_date
 and t.transaction_date < date(contract_start_date, '+' || contract_duration_months || ' months')
             then 1 else 0 end as has_active_contract
-    from int_transactions_with_gbp_amounts t
-    left join client_contracts c
+    from main_intermediate."int_transactions_with_gbp_amounts" t
+    left join main_staging."stg_client_contracts" c
         on t.client_id = c.client_id
 
 )
