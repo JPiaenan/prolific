@@ -1,9 +1,7 @@
 
     
     
-    
-    create table main."transactions" ("transaction_id" TEXT,"client_id" TEXT,"transaction_amount" REAL,"transaction_type" TEXT,"transaction_date" TEXT,"platform_fee_margin" REAL,"currency" TEXT,"linked_transaction_id" TEXT)
-  ;
+    truncate table "main"."transactions";
     -- dbt seed --
     
             insert into main.transactions ("transaction_id", "client_id", "transaction_amount", "transaction_type", "transaction_date", "platform_fee_margin", "currency", "linked_transaction_id") values

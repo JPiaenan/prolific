@@ -1,9 +1,7 @@
 
     
     
-    
-    create table main."transaction_resolutions" ("transaction_id" TEXT,"resolution_status" TEXT,"resolution_date" TEXT)
-  ;
+    truncate table "main"."transaction_resolutions";
     -- dbt seed --
     
             insert into main.transaction_resolutions ("transaction_id", "resolution_status", "resolution_date") values
