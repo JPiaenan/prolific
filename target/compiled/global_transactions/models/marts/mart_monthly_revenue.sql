@@ -1,11 +1,7 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
+
 
 with revenue_data as (
-    select * from {{ ref('int_revenue_recognition') }}
+    select * from main_intermediate."int_revenue_recognition"
 )
 
 select 

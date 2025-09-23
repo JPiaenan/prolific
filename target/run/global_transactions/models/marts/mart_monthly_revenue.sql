@@ -1,11 +1,13 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
+
+  
+    
+    
+    create  table main_marts."mart_monthly_revenue"
+    as
+        
 
 with revenue_data as (
-    select * from {{ ref('int_revenue_recognition') }}
+    select * from main_intermediate."int_revenue_recognition"
 )
 
 select 
@@ -75,3 +77,5 @@ group by
 order by 
     client_id, 
     revenue_month
+
+  

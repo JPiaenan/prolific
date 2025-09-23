@@ -20,10 +20,11 @@ select
     t.transaction_amount_gbp,
     t.actual_platform_fee_gbp,
     t.fee_status,
-    
-    -- Add resolution data for chargebacks
-    tr.resolution_status,
-    tr.resolution_date,
+    t.spend_threshold,    
+    t.cumulative_spend_in_contract,
+    t.spend_threshold_met,    tr.resolution_status,
+    t.fee_discount_savings_gbp,
+    t.has_active_contract,    -- Add resolution data for chargebacks    tr.resolution_date,
     
     -- Apply revenue recognition rules
     case 
