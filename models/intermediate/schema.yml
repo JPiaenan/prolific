@@ -1,0 +1,160 @@
+version: 2
+
+models:
+  - name: int_transactions_with_gbp_amounts
+    description: >
+      Transactions joined with exchange rates and converted to GBP amounts.
+      This model enriches transaction data with GBP conversions using daily exchange rates.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Original transaction amount in local currency"
+        tests:
+          - not_null
+      - name: transaction_type
+        description: "Type of transaction (payment, refund, chargeback, fraud)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['payment', 'refund', 'chargeback', 'fraud']
+      - name: transaction_date
+        description: "Date when the transaction occurred"
+        tests:
+          - not_null
+      - name: platform_fee_margin
+        description: "Platform fee margin as a decimal (e.g., 0.029 for 2.9%)"
+        tests:
+          - not_null
+      - name: original_currency
+        description: "Original currency code of the transaction"
+        tests:
+          - not_null
+      - name: exchange_rate_to_gbp
+        description: "Exchange rate from original currency to GBP"
+        tests:
+          - not_null
+      - name: transaction_amount_gbp
+        description: "Transaction amount converted to GBP"
+        tests:
+          - not_null
+
+  - name: int_client_contract_periods
+    description: >
+      Client contract periods with spend tracking and threshold analysis.
+      This model calculates cumulative spend within contract periods and determines if spend thresholds are met.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: contract_start_date
+        description: "Start date of the client contract"
+      - name: contract_end_date
+        description: "End date of the client contract"
+      - name: spend_threshold
+        description: "Spend threshold amount in GBP for discount eligibility"
+      - name: discounted_fee_margin
+        description: "Discounted fee margin when threshold is met"
+      - name: has_active_contract
+        description: "Boolean flag indicating if transaction falls within active contract period"
+      - name: cumulative_spend_in_contract
+        description: "Running total of spend within the contract period"
+      - name: spend_threshold_met
+        description: "Boolean flag indicating if spend threshold has been met"
+
+  - name: int_transactions_with_fees
+    description: >
+      Transactions with calculated platform fees based on contract terms and spend thresholds.
+      This model applies fee logic including contract discounts and threshold-based fee reductions.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: applied_fee_margin
+        description: "Actual fee margin applied (standard or discounted)"
+        tests:
+          - not_null
+      - name: actual_platform_fee_gbp
+        description: "Calculated platform fee in GBP"
+        tests:
+          - not_null
+      - name: fee_discount_savings_gbp
+        description: "Amount saved due to contract discounts in GBP"
+        tests:
+          - not_null
+      - name: fee_status
+        description: "Status indicating fee type applied"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Discounted', 'Standard (Contract Active)', 'Standard (No Contract)']
+      - name: spend_threshold_met
+        description: "Boolean flag indicating if spend threshold has been met"
+      - name: has_active_contract
+        description: "Boolean flag indicating if transaction falls within active contract period"
+
+  - name: int_revenue_recognition
+    description: >
+      Final revenue recognition model applying business rules for revenue inclusion.
+      This model determines which transactions should be included in revenue based on type and resolution status.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: transaction_type
+        description: "Type of transaction"
+        tests:
+          - not_null
+      - name: revenue_amount_gbp
+        description: "Amount to be recognized as revenue in GBP"
+        tests:
+          - not_null
+      - name: gmv_amount_gbp
+        description: "Gross merchandise value in GBP"
+        tests:
+          - not_null
+      - name: include_in_revenue
+        description: "Boolean flag indicating if transaction should be included in revenue"
+        tests:
+          - not_null
+      - name: revenue_recognition_status
+        description: "Status of revenue recognition for the transaction"
+        tests:
+          - not_null
+      - name: resolution_status
+        description: "Resolution status for disputed transactions"
+      - name: spend_threshold
+        description: "Spend threshold amount for the client"
+      - name: cumulative_spend_in_contract
+        description: "Cumulative spend within contract period"
+      - name: spend_threshold_met
+        description: "Boolean flag indicating if spend threshold has been met"
+      - name: fee_discount_savings_gbp
+        description: "Fee savings from contract discounts"
+      - name: has_active_contract
+        description: "Boolean flag indicating active contract status"

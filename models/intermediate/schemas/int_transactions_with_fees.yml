@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: int_transactions_with_fees
+    description: >
+      Transactions with calculated platform fees based on contract terms and spend thresholds.
+      This model applies fee logic including contract discounts and threshold-based fee reductions.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Original transaction amount"
+        tests:
+          - not_null
+      - name: transaction_type
+        description: "Type of transaction"
+        tests:
+          - not_null
+      - name: transaction_date
+        description: "Date when the transaction occurred"
+        tests:
+          - not_null
+      - name: standard_fee_margin
+        description: "Standard platform fee margin"
+        tests:
+          - not_null
+      - name: original_currency
+        description: "Original currency code"
+        tests:
+          - not_null
+      - name: transaction_amount_gbp
+        description: "Transaction amount in GBP"
+        tests:
+          - not_null
+      - name: contract_start_date
+        description: "Contract start date"
+      - name: contract_end_date
+        description: "Contract end date"
+      - name: spend_threshold
+        description: "Spend threshold for discount eligibility"
+      - name: discounted_fee_margin
+        description: "Discounted fee margin"
+      - name: has_active_contract
+        description: "Boolean flag indicating active contract"
+      - name: cumulative_spend_in_contract
+        description: "Cumulative spend within contract period"
+      - name: spend_threshold_met
+        description: "Boolean flag indicating if threshold is met"
+      - name: applied_fee_margin
+        description: "Actual fee margin applied (standard or discounted)"
+        tests:
+          - not_null
+      - name: actual_platform_fee_gbp
+        description: "Calculated platform fee in GBP"
+        tests:
+          - not_null
+      - name: fee_discount_savings_gbp
+        description: "Amount saved due to contract discounts in GBP"
+        tests:
+          - not_null
+      - name: fee_status
+        description: "Status indicating fee type applied"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Discounted', 'Standard (Contract Active)', 'Standard (No Contract)']

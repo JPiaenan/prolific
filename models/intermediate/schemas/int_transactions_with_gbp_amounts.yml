@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: int_transactions_with_gbp_amounts
+    description: >
+      Transactions joined with exchange rates and converted to GBP amounts.
+      This model enriches transaction data with GBP conversions using daily exchange rates.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Original transaction amount in local currency"
+        tests:
+          - not_null
+      - name: transaction_type
+        description: "Type of transaction (payment, refund, chargeback, fraud)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['payment', 'refund', 'chargeback', 'fraud']
+      - name: transaction_date
+        description: "Date when the transaction occurred"
+        tests:
+          - not_null
+      - name: platform_fee_margin
+        description: "Platform fee margin as a decimal (e.g., 0.029 for 2.9%)"
+        tests:
+          - not_null
+      - name: original_currency
+        description: "Original currency code of the transaction"
+        tests:
+          - not_null
+      - name: exchange_rate_to_gbp
+        description: "Exchange rate from original currency to GBP"
+        tests:
+          - not_null
+      - name: transaction_amount_gbp
+        description: "Transaction amount converted to GBP"
+        tests:
+          - not_null
