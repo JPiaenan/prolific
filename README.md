@@ -4,6 +4,34 @@
 
 This dbt project is designed to process and analyze transaction data for a global marketplace platform. The project handles various transaction types, currency conversions, and revenue recognition rules.
 
+## Prerequisites
+
+- Python 3.8+
+- dbt-core
+- dbt-sqlite adapter
+- Virtual environment (recommended)
+
+## Quick Start
+
+1. **Setup Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  
+   pip install -r requirements.txt
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   dbt deps
+   dbt seed
+   ```
+
+3. **Run Models**
+   ```bash
+   dbt run
+   dbt test
+   ```
+
 ## Project Structure
 
 - `seeds/`: Contains raw CSV data files

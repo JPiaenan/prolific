@@ -1,0 +1,130 @@
+version: 2
+
+models:
+  - name: mart_monthly_revenue
+    description: >
+      Monthly revenue and performance metrics aggregated by client.
+      This mart provides comprehensive monthly financial metrics including revenue recognition,
+      GMV, contract performance, and fee analysis for business reporting and analytics.
+    columns:
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: revenue_month
+        description: "Revenue month in YYYY-MM format"
+        tests:
+          - not_null
+      
+      # Revenue Metrics
+      - name: total_revenue_gbp
+        description: "Total recognized revenue for the month in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: recognised_transaction_count
+        description: "Count of transactions included in revenue recognition"
+        tests:
+          - not_null
+      
+      # GMV Metrics
+      - name: total_gmv_gbp
+        description: "Total gross merchandise value for the month in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: payment_volume_gbp
+        description: "Total payment volume in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: refund_volume_gbp
+        description: "Total refund volume in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: chargeback_volume_gbp
+        description: "Total chargeback volume in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: fraud_volume_gbp
+        description: "Total fraud volume in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      
+      # Contract and Spend Tracking
+      - name: monthly_spend_threshold
+        description: "Spend threshold for the client (highest threshold if multiple)"
+      - name: max_cumulative_spend
+        description: "Maximum cumulative spend reached in the month (rounded to 2dp)"
+      - name: threshold_achieved_in_month
+        description: "Boolean flag (0/1) indicating if spend threshold was achieved in the month"
+      
+      # Discount Application Metrics
+      - name: total_fee_savings_gbp
+        description: "Total fee savings from contract discounts in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: discounted_revenue_gbp
+        description: "Revenue from transactions with discounted fees in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      - name: standard_revenue_gbp
+        description: "Revenue from transactions with standard fees in GBP (rounded to 2dp)"
+        tests:
+          - not_null
+      
+      # Transaction Counts by Type
+      - name: payment_count
+        description: "Number of payment transactions in the month"
+        tests:
+          - not_null
+      - name: refund_count
+        description: "Number of refund transactions in the month"
+        tests:
+          - not_null
+      - name: chargeback_count
+        description: "Number of chargeback transactions in the month"
+        tests:
+          - not_null
+      - name: fraud_count
+        description: "Number of fraud transactions in the month"
+        tests:
+          - not_null
+      
+      # Revenue Recognition Status Summary
+      - name: recognised_transactions
+        description: "Count of transactions with 'Recognized' status"
+        tests:
+          - not_null
+      - name: pending_transactions
+        description: "Count of transactions with 'Pending' status"
+        tests:
+          - not_null
+      - name: excluded_transactions
+        description: "Count of transactions with 'Excluded' status"
+        tests:
+          - not_null
+      
+      # Contract and Discount Status
+      - name: contract_status
+        description: "Contract status for the month"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Active Contract', 'No Contract']
+      - name: discount_application_status
+        description: "Discount application status summary"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Discount Applied', 'Contract Active - Threshold Not Met', 'No Contract']
+      
+      # Performance Metrics
+      - name: effective_fee_rate_percent
+        description: "Effective fee rate as percentage of payment volume (rounded to 2dp)"
+        tests:
+          - not_null
+
+    tests:
+      - unique:
+          column_name: "client_id || '-' || revenue_month"
+          name: unique_client_month_combination

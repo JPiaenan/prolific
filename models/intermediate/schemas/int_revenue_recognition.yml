@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: int_revenue_recognition
+    description: >
+      Final revenue recognition model applying business rules for revenue inclusion.
+      This model determines which transactions should be included in revenue based on type and resolution status.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Original transaction amount"
+        tests:
+          - not_null
+      - name: transaction_type
+        description: "Type of transaction"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['payment', 'refund', 'chargeback', 'fraud']
+      - name: transaction_date
+        description: "Date when the transaction occurred"
+        tests:
+          - not_null
+      - name: original_currency
+        description: "Original currency code"
+        tests:
+          - not_null
+      - name: transaction_amount_gbp
+        description: "Transaction amount in GBP"
+        tests:
+          - not_null
+      - name: actual_platform_fee_gbp
+        description: "Calculated platform fee in GBP"
+        tests:
+          - not_null
+      - name: fee_status
+        description: "Fee status (standard/discounted)"
+        tests:
+          - not_null
+      - name: spend_threshold
+        description: "Spend threshold amount for the client"
+      - name: cumulative_spend_in_contract
+        description: "Cumulative spend within contract period"
+      - name: spend_threshold_met
+        description: "Boolean flag indicating if spend threshold has been met"
+      - name: fee_discount_savings_gbp
+        description: "Fee savings from contract discounts"
+      - name: has_active_contract
+        description: "Boolean flag indicating active contract status"
+      - name: resolution_status
+        description: "Resolution status for disputed transactions"
+      - name: resolution_date
+        description: "Date when transaction was resolved"
+      - name: include_in_revenue
+        description: "Boolean flag indicating if transaction should be included in revenue"
+        tests:
+          - not_null
+      - name: revenue_amount_gbp
+        description: "Amount to be recognized as revenue in GBP"
+        tests:
+          - not_null
+      - name: gmv_amount_gbp
+        description: "Gross merchandise value in GBP"
+        tests:
+          - not_null
+      - name: revenue_recognition_status
+        description: "Status of revenue recognition for the transaction"
+        tests:
+          - not_null

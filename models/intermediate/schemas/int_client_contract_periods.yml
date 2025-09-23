@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: int_client_contract_periods
+    description: >
+      Client contract periods with spend tracking and threshold analysis.
+      This model calculates cumulative spend within contract periods and determines if spend thresholds are met.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client identifier"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Transaction amount in original currency"
+        tests:
+          - not_null
+      - name: transaction_type
+        description: "Type of transaction (payment, refund, chargeback, fraud)"
+        tests:
+          - not_null
+      - name: transaction_date
+        description: "Date when the transaction occurred"
+        tests:
+          - not_null
+      - name: platform_fee_margin
+        description: "Standard platform fee margin"
+        tests:
+          - not_null
+      - name: original_currency
+        description: "Original currency code"
+        tests:
+          - not_null
+      - name: transaction_amount_gbp
+        description: "Transaction amount converted to GBP"
+        tests:
+          - not_null
+      - name: contract_start_date
+        description: "Start date of the client contract"
+      - name: contract_end_date
+        description: "End date of the client contract"
+      - name: spend_threshold
+        description: "Spend threshold amount in GBP for discount eligibility"
+      - name: discounted_fee_margin
+        description: "Discounted fee margin when threshold is met"
+      - name: has_active_contract
+        description: "Boolean flag indicating if transaction falls within active contract period"
+      - name: cumulative_spend_in_contract
+        description: "Running total of spend within the contract period"
+      - name: spend_threshold_met
+        description: "Boolean flag indicating if spend threshold has been met"
