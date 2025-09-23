@@ -20,7 +20,8 @@ and t.transaction_date < date(contract_start_date, '+' || contract_duration_mont
         on t.client_id = c.client_id
 
 )
-    select
+  ,
+  b as (  select
         *,transaction_amount_gbp,
 --         case when has_active_contract = 1 then
 --                   sum(case when transaction_type = 'payment' then transaction_amount_gbp else 0 end)
@@ -37,6 +38,11 @@ and t.transaction_date < date(contract_start_date, '+' || contract_duration_mont
 order by client_id, contract_start_date,transaction_date,transaction_id
 
 ---- NOTE : may need to round transaction_amount_gbp to 2 dp  at the end but leave it for now
-;
+  )
+
+  select *,
+       case when has_active_contract = 1 and cumulative_spend_in_contract >= spend_threshold
+        then 1 else 0  end as spend_threshold_met
+       from b;
 
   
